@@ -226,12 +226,21 @@
 				            return this.center();
 			            },
 			            
-			            close: function(){
-				            this.overlay.remove();
-				            this.container
-				                .empty()
-				                .remove();
-				            $(this).triggerHandler('close');
+			            close: function(handler, eventType){
+			                var lb = this;
+			                
+			                if (handler){
+			                    handler.bind(eventType || 'click', function(){
+			                        lb.close();
+			                    });
+			                }
+			                else {
+				                this.overlay.remove();
+				                this.container
+				                    .empty()
+				                    .remove();
+				                $(this).triggerHandler('close');
+				            }
 				            return this;
 			            },
 			            
