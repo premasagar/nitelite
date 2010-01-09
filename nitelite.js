@@ -1,7 +1,33 @@
+/*!
+* NiteLite
+**
+    Stipped-down lightbox plugin for jQuery
+        github.com/premasagar/nitelite
+
+    by Premasagar Rose
+        premasagar.com
+        dharmafly.com
+
+    license:
+        opensource.org/licenses/mit-license.php
+
+*//*
+
+    creates method:
+        jQuery.lightbox()
+        
+    **
+    
+    with reverence:
+        last.fm/music/The+Nite-Liters
+        
+*/
+
+'use strict';
+
 (function($){
     var
         namespace = 'nitelite',
-        
         version = '0.1',
         
         settings = {
@@ -40,9 +66,7 @@
         Nitelite = {
             // TODO: Could use an iframe for overlay, to prevent small chance of CSS bleed
             Overlay: $.extend(
-	            function(opacity, bgColor){
-		            this.uid = Sqwidget.uid();
-								
+	            function(opacity, bgColor){								
 		            if (opacity){ // TODO: This doesn't allow opacity=0. Perhaps we should check typeof==='number'||typeof==='string'
 			            this.opacity = opacity;
 		            }
@@ -63,7 +87,7 @@
 			                    .height($().height() + 'px');
 			                return this;
 			            },
-			            				
+			            
 			            create: function(){
 				            var overlay = this;
 				            this.node = $('<div></div>')
@@ -143,7 +167,6 @@
 		            $.extend(
 			            this,
 			            {
-				            uid: Sqwidget.uid(), // TODO: Is this useful?
 				            overlay: $.extend(
 					            new Nitelite.Overlay(), // or $.lightbox.overlay()
 					            {lightbox:this}
@@ -194,11 +217,10 @@
 			                            });
 			                }
 			                return this;
-			            },			
-			            				
+			            },
+			            
 			            open: function(contents){
-			                var lb, lbLeft, lbTop;
-			                lb = this;
+			                var lb = this;
 			                
 			                this.overlay.add();
 			                
@@ -224,7 +246,7 @@
 			                    .center()
 			                    .container.show();
 			                this.overlay.fillScreen();
-			                							        
+			                
 				            $(this).triggerHandler('open'); // TODO: The 'open' and 'close' events will fire before the overlay has finished fading in. Is that OK? Should triggerHandler() be called before overlay.add(); Is it better to have an 'openstart' and 'open' event, plus 'closestart' and 'close'?
 				            return this.center();
 			            },
@@ -280,3 +302,5 @@
     // Assign jQuery.lightbox
     $.lightbox = api;
 }(jQuery));
+
+/*jslint onevar: true, browser: true, devel: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
