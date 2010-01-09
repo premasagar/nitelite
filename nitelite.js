@@ -107,14 +107,17 @@
 				            return this;
 			            },
 			            
-			            // TODO: investigate "this.node is null or not an object in IE"
 			            remove: function(){
-				            var overlay = this;
-				            this.node
-					            .fadeOut(function(){
-						            $(this).remove();
-						            $(overlay).triggerHandler('remove');
-					            });
+				            var
+				                overlay = this,
+				                node = this.node;
+				            
+				            if (node){
+				                node.fadeOut(function(){
+					                $(this).remove();
+					                $(overlay).triggerHandler('remove');
+				                });
+					        }
 				            return this;
 			            },
 			            
