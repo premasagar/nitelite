@@ -268,6 +268,8 @@
                 return notifyGlobalWindow(lb, ['create', 'add', 'remove', 'unload']);
             },
             {
+                nitelite: version,
+            
                 overlay: function(){
                    var ov = new Nitelite.Overlay();
                    return notifyGlobalWindow(ov, ['open', 'close', 'remove', 'unload']);
