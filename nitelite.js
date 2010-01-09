@@ -229,7 +229,8 @@
 			            close: function(handler, eventType){
 			                var lb = this;
 			                
-			                if (handler){
+			                // Assign a handler element (some kind of jQuery collection) to trigger.close()
+			                if (typeof handler === 'object'){
 			                    handler.bind(eventType || 'click', function(){
 			                        lb.close();
 			                    });
