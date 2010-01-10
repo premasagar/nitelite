@@ -92,11 +92,18 @@
 				            return this;
 			            },
 			            
-			            add: function(){
+			            add: function(callback){
 				            var overlay = this;
+				            
+				            if (callback){
+				                $(overlay).one('add', callback);
+				                return this.add();
+				            }
+				            
 				            if (!this.node){
 				                this.create();
 				            }
+				            
 				            this.node
 					            .hide()
 					            .data(ns(), this) /* add the Overlay object as the value of the 'sqwidget' data property - NOTE: the data is attached to the add() method and added every time the overlay is inserted into the DOM, rather than being attached to the create() method, because jQuery automatically destroys data on removal from the DOM TODO: probably the actual Sqwidget instance object should go here */
@@ -200,33 +207,34 @@
 			                var lb, lbLeft, lbTop;
 			                lb = this;
 			                
-			                this.overlay.add();
+			                this.overlay.add(function(){
+			                    if (!lb.container){
+			                        lb.container = $('<div></div>')
+			                            .hide()
+					                    .addClass(ns() + ' ' + ns([lb.type, 'container']))
+					                    .css({ // TODO: Should this be moved to a <style> element in the <head>, along with other CSS?
+						                    position:'absolute',
+						                    margin:0,
+						                    padding:0
+						                    //,position:'fixed' // TODO: only do this if the contents fits within the window viewport, and what about scrolling the background contents? and IE6?
+					                    });
+					                $(window).unload(function(){
+					                    lb.unload();
+				                    });
+		                        }
+			                    lb.container
+		                            .append(contents)
+		                            .appendTo('body');
+			                    lb
+			                        .center() // TODO: Is this necessary?
+			                        .container.show();
+			                    lb.overlay.fillScreen();
+			                    							        
+				                $(lb).triggerHandler('open'); // TODO: The 'open' and 'close' events will fire before the overlay has finished fading in. Is that OK? Should triggerHandler() be called before overlay.add(); Is it better to have an 'openstart' and 'open' event, plus 'closestart' and 'close'?
+				                lb.center();
+			                });
 			                
-			                if (!this.container){
-			                    this.container = $('<div></div>')
-			                        .hide()
-					                .addClass(ns() + ' ' + ns([this.type, 'container']))
-					                .css({ // TODO: Should this be moved to a <style> element in the <head>, along with other CSS?
-						                position:'absolute',
-						                //width:'100%',
-						                margin:0,
-						                padding:0
-						                //,position:'fixed' // TODO: only do this if the contents fits within the window viewport, and what about scrolling the background contents? and IE6,
-					                });
-					            $(window).unload(function(){
-					                lb.unload();
-				                });
-		                    }
-			                this.container
-		                        .append(contents)
-		                        .appendTo('body');
-			                this
-			                    .center()
-			                    .container.show();
-			                this.overlay.fillScreen();
-			                							        
-				            $(this).triggerHandler('open'); // TODO: The 'open' and 'close' events will fire before the overlay has finished fading in. Is that OK? Should triggerHandler() be called before overlay.add(); Is it better to have an 'openstart' and 'open' event, plus 'closestart' and 'close'?
-				            return this.center();
+			                return this;
 			            },
 			            
 			            close: function(handler, eventType){
