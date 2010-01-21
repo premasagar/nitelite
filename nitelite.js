@@ -29,6 +29,9 @@
     var
         namespace = 'nitelite',
         version = '0.1',
+       
+        win = window,
+        document = win.document,
         
         settings = {
             overlay: {
@@ -55,7 +58,7 @@
 				try {
 				    $(origin)
 					    .bind(type, function(){
-						    $(window).trigger(ns(), {type: (namespace || origin.type) + '.' + type, origin:this});
+						    $(win).trigger(ns(), {type: (namespace || origin.type) + '.' + type, origin:this});
 					    });
 			    }
 			    catch(e){}
@@ -83,8 +86,8 @@
 			            fillScreen: function(){
 			                this.node
 			                    // match document dimensions
-			                    .width($().width() + 'px')
-			                    .height($().height() + 'px');
+			                    .width($(document).width() + 'px')
+			                    .height($(document).height() + 'px');
 			                return this;
 			            },
 			            
@@ -103,13 +106,8 @@
 						            border:'0 none ' + this.bgColor
 					            });
 			                this.fillScreen();
-		                    /*
-		                    window.setTimeout(function(){
-			                    overlay.fillScreen();
-			                },50);
-			                */
 			                
-				            $(window).unload(function(){
+				            $(win).unload(function(){
 					            overlay.unload();
 				            });
 				            $(this).triggerHandler('create');
@@ -193,10 +191,10 @@
 		                
 		            $(this)
 		                .bind('open', function(){
-		                    $(window).resize(centerHandler);
+		                    $(win).resize(centerHandler);
 		                })
 		                .bind('close', function(){
-		                    $(window).unbind('resize', centerHandler);
+		                    $(win).unbind('resize', centerHandler);
 		                });
 	            },
 	            {
@@ -209,8 +207,8 @@
 			                    lbLeft, lbTop;
 			                    
 			                if (container){
-			                    lbLeft = Math.floor(($(window).width() - container.width()) / 2) + $().scrollLeft();
-			                        lbTop = Math.floor(($(window).height() - container.height()) / 2) + $().scrollTop();
+			                    lbLeft = Math.floor(($(win).width() - container.width()) / 2) + $(document).scrollLeft();
+			                        lbTop = Math.floor(($(win).height() - container.height()) / 2) + $(document).scrollTop();
 			                        if (lbLeft < 0){
 				                        lbLeft = 0;
 			                        }
@@ -240,7 +238,7 @@
 						                    padding:0
 						                    //,position:'fixed' // TODO: only do this if the contents fits within the window viewport, and what about scrolling the background contents? and IE6?
 					                    });
-					                $(window).unload(function(){
+					                $(win).unload(function(){
 					                    lb.unload();
 				                    });
 		                        }
