@@ -25,6 +25,48 @@
 
 'use strict';
 
+/**
+* Throttle
+*   github.com/premasagar/throttle
+**/
+(function($){
+    function throttle(handler, interval, defer){
+        var context = this;
+        interval = interval || 250; // milliseconds
+        // defer is false by default
+        
+        return function(){
+            if (!handler.throttling){
+                handler.throttling = true;
+                
+                window.setTimeout(function(){
+                    if (defer){
+                        handler.call(context);
+                    }                            
+                    handler.throttling = false;
+                }, interval);
+                
+                if (!defer){
+                    handler.call(context);
+                }
+            }
+            return context;
+        };
+    }
+
+    // jQuery.throttle
+    $.throttle = throttle;
+    
+    // jQuery(elem).throttle
+    $.fn.throttle = function(eventType, handler, interval, defer){
+        return $(this).bind(eventType, throttle(handler, interval, defer));
+    };
+}(jQuery));
+
+
+// **
+
+
 (function($){
     var
         namespace = 'nitelite',
@@ -162,12 +204,12 @@
 
             Lightbox: $.extend(
 	            function(){
-		            var lb = this;
-		
-		            function centerHandler(){
-		                lb.center();
-		                lb.overlay.fillScreen();
-		            }
+		            var
+		                lb = this,
+		                centerHandler = $.throttle(function(){
+		                    lb.center();
+		                    lb.overlay.fillScreen();
+		                }, 250, true);
 		
 		            $.extend(
 			            this,
@@ -227,33 +269,31 @@
 			            open: function(contents){
 			                var lb = this;
 			                
-			                this.overlay.add(function(){
-			                    if (!lb.container){
-			                        lb.container = $('<div></div>')
-			                            .hide()
-					                    .addClass(ns() + ' ' + ns([lb.type, 'container']))
-					                    .css({ // TODO: Should this be moved to a <style> element in the <head>, along with other CSS?
-						                    position:'absolute',
-						                    margin:0,
-						                    padding:0
-						                    //,position:'fixed' // TODO: only do this if the contents fits within the window viewport, and what about scrolling the background contents? and IE6?
-					                    });
-					                $(win).unload(function(){
-					                    lb.unload();
+			                this.overlay.add();
+			                if (!lb.container){
+		                        lb.container = $('<div></div>')
+		                            .hide()
+				                    .addClass(ns() + ' ' + ns([lb.type, 'container']))
+				                    .css({ // TODO: Should this be moved to a <style> element in the <head>, along with other CSS?
+					                    position:'absolute',
+					                    margin:0,
+					                    padding:0
+					                    //,position:'fixed' // TODO: only do this if the contents fits within the window viewport, and what about scrolling the background contents? and IE6?
 				                    });
-		                        }
-			                    lb.container
-		                            .append(contents)
-		                            .appendTo('body');
-			                    lb
-			                        .center() // TODO: Is this necessary?
-			                        .container.show();
-			                    lb.overlay.fillScreen();
-			                    
-				                $(lb).triggerHandler('open'); // TODO: The 'open' and 'close' events will fire before the overlay has finished fading in. Is that OK? Should triggerHandler() be called before overlay.add(); Is it better to have an 'openstart' and 'open' event, plus 'closestart' and 'close'?
-				                lb.center();
-			                });
-			                
+				                $(win).unload(function(){
+				                    lb.unload();
+			                    });
+	                        }
+		                    lb.container
+	                            .append(contents)
+	                            .appendTo('body');
+		                    lb
+		                        .center() // TODO: Is this necessary?
+		                        .container.show();
+		                    lb.overlay.fillScreen();
+		                    
+			                $(lb).triggerHandler('open'); // TODO: The 'open' and 'close' events will fire before the overlay has finished fading in. Is that OK? Should triggerHandler() be called before overlay.add(); Is it better to have an 'openstart' and 'open' event, plus 'closestart' and 'close'?
+			                lb.center();
 			                return this;
 			            },
 			            
