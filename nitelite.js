@@ -1,67 +1,70 @@
+'use strict';
+
 /*!
-* NiteLite
-**
+* Nitelite
+*   github.com/premasagar/nitelite
+*
+*//*
     Stipped-down lightbox plugin for jQuery
-        github.com/premasagar/nitelite
 
     by Premasagar Rose
         premasagar.com
         dharmafly.com
 
-    license:
+    license
         opensource.org/licenses/mit-license.php
 
-*//*
+    **
 
-    creates method:
+    creates method
         jQuery.lightbox()
         
     **
     
-    with reverence:
+    reverence
         last.fm/music/The+Nite-Liters
         
 */
 
-'use strict';
 
-/**
-* Throttle
-*   github.com/premasagar/throttle
-**/
-(function($){
-    function throttle(handler, interval, defer){
-        var context = this;
-        interval = interval || 250; // milliseconds
-        // defer is false by default
-        
-        return function(){
-            if (!handler.throttling){
-                handler.throttling = true;
-                
-                window.setTimeout(function(){
-                    if (defer){
+    /*
+    * Throttle
+    *   github.com/premasagar/throttle
+    *
+    */
+    (function($){
+        function throttle(handler, interval, defer){
+            var context = this;
+            interval = interval || 250; // milliseconds
+            // defer is false by default
+            
+            return function(){
+                if (!handler.throttling){
+                    handler.throttling = true;
+                    
+                    window.setTimeout(function(){
+                        if (defer){
+                            handler.call(context);
+                        }                            
+                        handler.throttling = false;
+                    }, interval);
+                    
+                    if (!defer){
                         handler.call(context);
-                    }                            
-                    handler.throttling = false;
-                }, interval);
-                
-                if (!defer){
-                    handler.call(context);
+                    }
                 }
-            }
-            return context;
-        };
-    }
+                return context;
+            };
+        }
 
-    // jQuery.throttle
-    $.throttle = throttle;
-    
-    // jQuery(elem).throttle
-    $.fn.throttle = function(eventType, handler, interval, defer){
-        return $(this).bind(eventType, throttle(handler, interval, defer));
-    };
-}(jQuery));
+        // jQuery.throttle
+        $.throttle = throttle;
+        
+        // jQuery(elem).throttle
+        $.fn.throttle = function(eventType, handler, interval, defer){
+            return $(this).bind(eventType, throttle(handler, interval, defer));
+        };
+    }(jQuery));
 
 
 // **
@@ -139,12 +142,12 @@
 					            .addClass(ns() + ' ' + ns('overlay'))
 					            .css({ // TODO: Should this be moved to a <style> element in the <head>, along with other CSS? (except opacity and bgColor, if different from default)
 						            opacity:this.opacity,
-						            backgroundColor:this.bgColor,
 						            position:'absolute',
 						            top:0,
 						            left:0,
 						            margin:0,
 						            padding:0,
+						            'background-color':this.bgColor, // TODO: this previously used the property backgroundColor, but this showed problems when shown on a page with the bbcwswidget - to be investigated
 						            border:'0 none ' + this.bgColor
 					            });
 			                this.fillScreen();
