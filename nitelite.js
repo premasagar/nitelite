@@ -215,8 +215,7 @@
 		                    }, 250, true
 		                ),
 		                // track click of 'Esc' key - TODO not functioning
-		                escKeyHandler = function(){
-		                    // _(ev.which);
+		                escKeyHandler = function(ev){
 	                        if (ev.which === 27){ // ESC key
                                 lb.close();
                             }
@@ -245,11 +244,35 @@
 		            $(this)
 		                .bind('open', function(){
 		                    $(win).resize(centerHandler);
+		                    
+		                    // 'Esc' key trapping
 		                    $(document).keydown(escKeyHandler);
+		                    win.setTimeout(function(){
+		                        $('iframe').each(
+		                            function(){
+		                                try {
+		                                    $(this.contentWindow.document)
+		                                        .keydown(escKeyHandler);
+		                                }
+		                                catch(e){}
+		                            }
+		                        );
+		                    }, 260); // leave enough time for iframes in container to initialise
 		                })
 		                .bind('close', function(){
 		                    $(win).unbind('resize', centerHandler);
+		                    
+		                    // Unbind 'Esc' key trapping
 		                    $(document).unbind('keydown', escKeyHandler);
+		                    $('iframe').each(
+	                            function(){
+	                                try {
+	                                    $(this.contentWindow.document)
+	                                        .unbind('keydown', escKeyHandler);
+	                                }
+	                                catch(e){}
+	                            }
+	                        );
 		                });
 	            },
 	            {
