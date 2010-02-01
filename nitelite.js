@@ -208,10 +208,19 @@
 	            function(){
 		            var
 		                lb = this,
-		                centerHandler = $.throttle(function(){
-		                    lb.center();
-		                    lb.overlay.fillScreen();
-		                }, 250, true);
+		                centerHandler = $.throttle(
+		                    function(){
+		                        lb.center();
+		                        lb.overlay.fillScreen();
+		                    }, 250, true
+		                ),
+		                // track click of 'Esc' key - TODO not functioning
+		                escKeyHandler = function(){
+		                    // _(ev.which);
+	                        if (ev.which === 27){ // ESC key
+                                lb.close();
+                            }
+		                };
 		
 		            $.extend(
 			            this,
@@ -236,9 +245,11 @@
 		            $(this)
 		                .bind('open', function(){
 		                    $(win).resize(centerHandler);
+		                    $(document).keydown(escKeyHandler);
 		                })
 		                .bind('close', function(){
 		                    $(win).unbind('resize', centerHandler);
+		                    $(document).unbind('keydown', escKeyHandler);
 		                });
 	            },
 	            {
