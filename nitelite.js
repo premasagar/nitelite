@@ -8,7 +8,6 @@
     Stipped-down lightbox plugin for jQuery
 
     by Premasagar Rose
-        premasagar.com
         dharmafly.com
 
     license
@@ -29,7 +28,7 @@
 
     /*
     * Throttle
-    *   github.com/premasagar/throttle
+    *   github.com/premasagar/mishmash/tree/master/throttle/
     *
     */
     (function($){
@@ -294,6 +293,14 @@
 		                        .center() // TODO: Is this necessary?
 		                        .container.show();
 		                    lb.overlay.fillScreen();
+		                    
+		                    // track click of 'Esc' key
+		                    $(document).bind('keydown', function bindEsc(ev){
+                                if (ev.which === 27){ // ESC key
+                                    $(this).unbind('keydown', bindEsc);
+                                    lb.close();
+                                }
+                            });
 		                    
 			                $(lb).triggerHandler('open'); // TODO: The 'open' and 'close' events will fire before the overlay has finished fading in. Is that OK? Should triggerHandler() be called before overlay.add(); Is it better to have an 'openstart' and 'open' event, plus 'closestart' and 'close'?
 			                lb.center();
