@@ -391,6 +391,14 @@
     
     // Assign jQuery.lightbox
     $.lightbox = api;
+    
+    /*
+        var lb = $.lightbox();
+        lb.open('<div>Lorem ipsum</div>');
+        lb.close('<a id="myCloseButton"></a>');
+        $('#myCloseButton').click();
+        lb.close();
+    */
 }(jQuery));
 
 /*jslint browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
