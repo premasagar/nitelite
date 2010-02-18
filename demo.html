@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Nitelite Demo</title>
+        <style type="text/css">
+            body {
+                font-size: 0.8em;
+            }
+        </style>
+        
+    </head>
+    <body>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.js"></script>
+        <script src="nitelite.js"></script>
+        <script>
+            var lb = $.lightbox();
+            lb.open(
+                $('<div/>', {
+                    html: '\
+                        <h2>Nitelite demo</h2>\
+                        <hr/>\
+                        <p>Nitelite is a minimalist Lightbox plugin for jQuery. Here\'s an example of how you might use it:</p>\
+                    ',
+                    css: {
+                        background: '#FFF',
+                        padding: '10px',
+                        width: 600,
+                        border: '3px solid #CCC',
+                        MozBorderRadius: '7px',
+                        WebkitBorderRadius: '7px',
+                        position: 'relative'
+                    }
+                })
+                .append(
+                    $('<pre/>', {
+                        css: {
+                            fontFamily: 'Consolas, monospace'
+                        },
+                        html: '$.lightbox().open(\n   jQuery("&lt;div/&gt;").html("Content")\n);'
+                    })
+                )
+                .append(
+                    $('<a/>', {
+                        click: function() {
+                            lb.close();
+                            return false;
+                        },
+                        href: '#',
+                        html: 'CLOSE',
+                        css: {
+                            position: 'absolute',
+                            top: 20,
+                            right: 20
+                        }
+                    })
+                )
+            );
+        </script>
+        
+    </body>
+</html>

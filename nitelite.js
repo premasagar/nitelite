@@ -394,8 +394,18 @@
     
     /*
         var lb = $.lightbox();
-        lb.open('<div>Lorem ipsum</div>');
-        lb.close('<a id="myCloseButton"></a>');
+        lb
+			.open('<div>Lorem ipsum</div>')
+			.close('#myCloseButton');
+        $('<a/>').click(lb.close)
+		
+		lb.open(
+			jQuery('<div/>')
+				.append(
+					jQuery('<a/>').click(function(){lb.close()})
+				)
+		)
+		
         $('#myCloseButton').click();
         lb.close();
     */

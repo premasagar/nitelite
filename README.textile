@@ -1,0 +1,38 @@
+h1. Nitelite
+
+h2. API Documentation
+
+h2. @jQuery.lightbox@
+
+Calling @jQuery.lightbox@ will give you a new lightbox instance. Each instance has the following methods:
+
+ * @open@
+ * @close@
+ * @center@
+ * @unload@
+
+h2. @open()@
+
+This method takes a single argument -- the contents of the lightbox. It can be a string of HTML, a single DOM node, an array of DOM nodes, or a jQuery collection. E.g.
+
+<pre>
+// String of HTML:
+jQuery.lightbox().open('<div>content...</div>');
+
+// Single DOM node:
+jQuery.lightbox().open(document.createElement('div'));
+
+// jQuery collection:
+jQuery.lightbox().open(
+    jQuery('<div/>', {
+        css: {color:'red'}
+    })
+);
+</pre>
+
+*Note* that if you pass a DOM node (or collection), that node will not be cloned -- it will simply be appended to the lightbox.
+
+
+
+
+
