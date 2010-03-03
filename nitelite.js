@@ -377,14 +377,14 @@
                 var lb = new Nitelite.Lightbox();
                 // Notify global window of internal events
                 // This 'firehose' of Sqwidget events would allow innovation and loosely coupled plugins
-                return notifyGlobalWindow(lb, ['create', 'add', 'remove', 'unload']);
+                return notifyGlobalWindow(ov, ['open', 'close', 'remove', 'unload']);
             },
             {
                 nitelite: version,
             
                 overlay: function(){
                    var ov = new Nitelite.Overlay();
-                   return notifyGlobalWindow(ov, ['open', 'close', 'remove', 'unload']);
+                   return notifyGlobalWindow(lb, ['create', 'add', 'remove', 'unload']);
                 }
             }
         );
