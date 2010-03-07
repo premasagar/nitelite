@@ -5,7 +5,7 @@
 *   github.com/premasagar/nitelite
 *
 *//*
-    Stipped-down lightbox plugin for jQuery
+    A stipped-down lightbox plugin for jQuery
 
     by Premasagar Rose
         dharmafly.com
@@ -16,7 +16,7 @@
     **
 
     creates method
-        jQuery.lightbox()
+        jQuery.nitelite()
         
     **
     
@@ -72,7 +72,7 @@
 (function($){
     var
         namespace = 'nitelite',
-        version = '0.1',
+        version = '0.1.1',
        
         win = window,
         document = win.document,
@@ -255,7 +255,7 @@
 			            this,
 			            {
 				            overlay: $.extend(
-					            new Nitelite.Overlay(), // or $.lightbox.overlay()
+					            new Nitelite.Overlay(), // or $.nitelite.overlay()
 					            {lightbox:this}
 				            )
 			            }
@@ -428,23 +428,6 @@
     // Assign jQuery.nitelite
     $.nitelite = api;
     
-    /*
-        var lb = $.lightbox();
-        lb
-			.open('<div>Lorem ipsum</div>')
-			.close('#myCloseButton');
-        $('<a/>').click(lb.close)
-		
-		lb.open(
-			jQuery('<div/>')
-				.append(
-					jQuery('<a/>').click(function(){lb.close()})
-				)
-		)
-		
-        $('#myCloseButton').click();
-        lb.close();
-    */
 }(jQuery));
 
 /*jslint browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
