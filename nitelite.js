@@ -425,8 +425,8 @@
             }
         );
     
-    // Assign jQuery.lightbox
-    $.lightbox = api;
+    // Assign jQuery.nitelite
+    $.nitelite = api;
     
     /*
         var lb = $.lightbox();
