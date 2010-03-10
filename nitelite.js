@@ -147,7 +147,8 @@
 						            margin:0,
 						            padding:0,
 						            'background-color':this.bgColor, // TODO: this previously used the property backgroundColor, but this showed problems when shown on a page with the bbcwswidget - to be investigated
-						            border:'0 none ' + this.bgColor
+						            border:'0 none ' + this.bgColor,
+						            'z-index':99999
 					            });
 			                this.fillScreen();
 			                
@@ -313,7 +314,8 @@
 				                    .css({ // TODO: Should this be moved to a <style> element in the <head>, along with other CSS?
 					                    position:'absolute',
 					                    margin:0,
-					                    padding:0
+					                    padding:0,
+						                'z-index':99999
 					                    //,position:'fixed' // TODO: only do this if the contents fits within the window viewport, and what about scrolling the background contents? and IE6?
 				                    });
 				                $(win).unload(function(){
