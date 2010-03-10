@@ -5,7 +5,7 @@
 *   github.com/premasagar/nitelite
 *
 *//*
-    Stipped-down lightbox plugin for jQuery
+    A stipped-down lightbox plugin for jQuery
 
     by Premasagar Rose
         dharmafly.com
@@ -16,7 +16,7 @@
     **
 
     creates method
-        jQuery.lightbox()
+        jQuery.nitelite()
         
     **
     
@@ -72,7 +72,7 @@
 (function($){
     var
         namespace = 'nitelite',
-        version = '0.1',
+        version = '0.1.1',
        
         win = window,
         document = win.document,
@@ -109,6 +109,32 @@
 			});
 			return origin;
 		},
+		
+		// Find all visible object and embed elements that are not children of other visible object or embed elements
+		hideFlash = function(){
+		    if (!hideFlash.hidden){
+		        hideFlash.hidden = [];
+		    }
+            $('object:visible, embed:visible')
+                .filter(function(){
+                    return !$(this).parents('embed:visible, object:visible').length;
+                })
+                .each(function(){
+                    var o = $(this);
+                    hideFlash.hidden.push([
+                        o, o.css('visibility')
+                    ]);
+                    o.css('visibility', 'hidden');
+                });
+        },
+        
+        // Return objects and embeds to original visibility value
+        showFlash = function(){
+            $.each(hideFlash.hidden, function(i, o){
+                o[0].css('visibility', o[1]);
+            });
+            hideFlash.hidden = [];
+        },
         
         Nitelite = {
             // TODO: Could use an iframe for overlay, to prevent small chance of CSS bleed
@@ -198,7 +224,11 @@
 			            unload: function(){
 				            this.remove();
 				            delete this.node;
-				            $(this).triggerHandler('unload');
+				            // try/catch added due to bug in jQuery 1.4.2
+				            try {
+    				            $(this).triggerHandler('unload');
+    				        }
+    				        catch(e){}
 				            return this;
 			            }
 		            }
@@ -226,7 +256,7 @@
 			            this,
 			            {
 				            overlay: $.extend(
-					            new Nitelite.Overlay(), // or $.lightbox.overlay()
+					            new Nitelite.Overlay(), // or $.nitelite.overlay()
 					            {lightbox:this}
 				            )
 			            }
@@ -305,6 +335,7 @@
 			            
 			            open: function(contents){
 			                var lb = this;
+			                hideFlash();
 			                
 			                this.overlay.add();
 			                if (!lb.container){
@@ -345,6 +376,7 @@
 			            
 			            close: function(handler, eventType){
 			                var lb = this;
+			                showFlash();
 			                
 			                // Assign a handler element (some kind of jQuery collection) to trigger.close()
 			                if (typeof handler === 'object'){
@@ -365,7 +397,11 @@
 			            unload: function(){
 				            this.close();
 				            delete this.container;
-				            $(this).triggerHandler('unload');
+				            // try/catch added due to bug in jQuery 1.4.2
+				            try {
+    				            $(this).triggerHandler('unload');
+    				        }
+    				        catch(e){}
 				            return this;
 			            }
 		            }
@@ -379,38 +415,21 @@
                 var lb = new Nitelite.Lightbox();
                 // Notify global window of internal events
                 // This 'firehose' of Sqwidget events would allow innovation and loosely coupled plugins
-                return notifyGlobalWindow(ov, ['open', 'close', 'remove', 'unload']);
+                return notifyGlobalWindow(lb, ['open', 'close', 'remove', 'unload']);
             },
             {
                 nitelite: version,
             
                 overlay: function(){
                    var ov = new Nitelite.Overlay();
-                   return notifyGlobalWindow(lb, ['create', 'add', 'remove', 'unload']);
+                   return notifyGlobalWindow(ov, ['create', 'add', 'remove', 'unload']);
                 }
             }
         );
     
-    // Assign jQuery.lightbox
-    $.lightbox = api;
+    // Assign jQuery.nitelite
+    $.nitelite = api;
     
-    /*
-        var lb = $.lightbox();
-        lb
-			.open('<div>Lorem ipsum</div>')
-			.close('#myCloseButton');
-        $('<a/>').click(lb.close)
-		
-		lb.open(
-			jQuery('<div/>')
-				.append(
-					jQuery('<a/>').click(function(){lb.close()})
-				)
-		)
-		
-        $('#myCloseButton').click();
-        lb.close();
-    */
 }(jQuery));
 
 /*jslint browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
